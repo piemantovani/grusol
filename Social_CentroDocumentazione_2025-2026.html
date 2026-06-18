@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gruppo Solidarietà — Social Centro Documentazione 2025/2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#FAF7F2; --card:#FFFFFF; --text:#2C2C2C; --text-muted:#7A7A7A;
+  --accent:#C44536; --accent2:#2E6F95; --accent3:#5B8C5A; --accent4:#D4A843;
+  --border:#E8E2D8; --shadow:0 2px 20px rgba(0,0,0,0.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+.hero{background:linear-gradient(135deg,#2E6F95 0%,#1a4a64 60%,#C44536 100%);color:#fff;padding:3rem 2rem 2.5rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.5;}
+.hero h1{font-family:'DM Serif Display',serif;font-size:2.2rem;font-weight:400;letter-spacing:-.5px;position:relative;margin-bottom:.3rem;}
+.hero .subtitle{font-size:1rem;opacity:.85;font-weight:300;position:relative;}
+.hero .year-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:.2rem 1rem;font-size:.85rem;margin-top:.8rem;position:relative;backdrop-filter:blur(4px);}
+.kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--border);margin:0 1.5rem;transform:translateY(-1.5rem);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
+.kpi{background:var(--card);padding:1.2rem 1rem;text-align:center;}
+.kpi-value{font-family:'DM Serif Display',serif;font-size:1.9rem;color:var(--accent2);line-height:1;}
+.kpi-label{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-top:.3rem;font-weight:500;}
+.nav{display:flex;gap:.5rem;padding:1rem 1.5rem .5rem;flex-wrap:wrap;justify-content:center;}
+.nav button{background:transparent;border:1.5px solid var(--border);border-radius:20px;padding:.4rem 1rem;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all .3s;}
+.nav button:hover,.nav button.active{background:var(--accent2);color:#fff;border-color:var(--accent2);}
+.section{padding:1.5rem;display:none;}
+.section.active{display:block;}
+.section-title{font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:.3rem;}
+.section-desc{font-size:.85rem;color:var(--text-muted);margin-bottom:1.5rem;max-width:640px;}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.2rem;}
+.card{background:var(--card);border-radius:12px;padding:1.5rem;box-shadow:var(--shadow);border:1px solid var(--border);animation:fadeIn .5s ease forwards;}
+.card-title{font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
+.card-title .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+.card.full{grid-column:1/-1;}
+.chart-container{position:relative;width:100%;}
+.insight{background:#F0F6F9;border-left:3px solid var(--accent2);padding:.8rem 1rem;border-radius:0 8px 8px 0;margin-top:1rem;font-size:.82rem;line-height:1.5;}
+.insight.warning{background:#FFF5F0;border-left-color:var(--accent);}
+.insight.success{background:#F0F7F0;border-left-color:var(--accent3);}
+.insight.neutral{background:#FBF6EC;border-left-color:var(--accent4);}
+.insight strong{font-weight:600;}
+.data-table{width:100%;border-collapse:collapse;font-size:.82rem;}
+.data-table th{text-align:left;padding:.5rem .7rem;border-bottom:2px solid var(--border);font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);}
+.data-table td{padding:.5rem .7rem;border-bottom:1px solid #F2F0EC;}
+.data-table tr:last-child td{border-bottom:none;}
+.data-table .highlight{font-weight:600;color:var(--accent2);}
+.data-table td.num{text-align:right;font-variant-numeric:tabular-nums;}
+.verdict-head{font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.4rem;}
+.tag{display:inline-block;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.6px;padding:.15rem .6rem;border-radius:12px;margin-bottom:.6rem;}
+.tag.no{background:#FBE6E2;color:#9e3326;}
+.tag.maybe{background:#FBF1D8;color:#8a6b1d;}
+.tag.yes{background:#E4F0E3;color:#3d6b3c;}
+.footer{text-align:center;padding:2rem 1.5rem;font-size:.75rem;color:var(--text-muted);border-top:1px solid var(--border);margin-top:2rem;}
+@media(max-width:600px){.hero h1{font-size:1.6rem;}.kpi-strip{grid-template-columns:repeat(2,1fr);margin:0 .8rem;}.section{padding:1rem;}.card-grid{grid-template-columns:1fr;}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Centro Documentazione · I canali social</h1>
+  <div class="subtitle">Facebook & Instagram a confronto · per decidere: tenere, potenziare o chiudere</div>
+  <div class="year-badge">📊 12 mesi · 18 giugno 2025 – 18 giugno 2026</div>
+</div>
+
+<div class="kpi-strip">
+  <div class="kpi"><div class="kpi-value">16.028</div><div class="kpi-label">Visualizz. FB</div></div>
+  <div class="kpi"><div class="kpi-value">15.785</div><div class="kpi-label">Visualizz. IG</div></div>
+  <div class="kpi"><div class="kpi-value">363</div><div class="kpi-label">Interazioni FB</div></div>
+  <div class="kpi"><div class="kpi-value">99</div><div class="kpi-label">Interazioni IG</div></div>
+  <div class="kpi"><div class="kpi-value">2,26%</div><div class="kpi-label">Engagement FB</div></div>
+  <div class="kpi"><div class="kpi-value">0,63%</div><div class="kpi-label">Engagement IG</div></div>
+</div>
+
+<nav class="nav">
+  <button class="active" onclick="showSection('panoramica',this)">Panoramica</button>
+  <button onclick="showSection('facebook',this)">Centro Doc · Facebook</button>
+  <button onclick="showSection('instagram',this)">Centro Doc · Instagram</button>
+  <button onclick="showSection('confronto',this)">Confronto coi canali</button>
+  <button onclick="showSection('verdetto',this)">Verdetto</button>
+</nav>
+
+<!-- PANORAMICA -->
+<div id="panoramica" class="section active">
+  <h2 class="section-title">Panoramica</h2>
+  <p class="section-desc">I due canali del Centro Documentazione — pagina Facebook "Centro Documentazione Politiche Sociali" e profilo Instagram <em>centrodoc_gru</em> — letti nello stesso periodo, con la pagina principale del Gruppo Solidarietà come termine di paragone.</p>
+
+  <div class="card-grid">
+    <div class="card full">
+      <div class="card-title"><span class="dot" style="background:var(--accent2)"></span>La scala dei tre canali · visualizzazioni in 12 mesi</div>
+      <div class="chart-container" style="height:240px"><canvas id="c-scala"></canvas></div>
+      <div class="insight neutral">
+        <strong>Ordini di grandezza diversi.</strong> La pagina principale fa <strong>394.792</strong> visualizzazioni; i due canali del Centro Doc insieme poco più di <strong>31.000</strong>, circa il 4% del totale del Gruppo su Facebook. È il dato da cui parte tutto: i canali del Centro Doc sono presìdi piccoli e di nicchia, non megafoni. La domanda giusta non è "perché fanno pochi numeri", ma "fanno il loro lavoro specifico, e per chi".
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent3)"></span>Centro Doc · andamento mensile visualizzazioni</div>
+      <div class="chart-container" style="height:300px"><canvas id="c-cd-mensile"></canvas></div>
+      <div class="insight">
+        <strong>Due storie diverse.</strong> Facebook è il canale stabile, attivo per tutto l'anno. Instagram nasce in estate 2025, parte forte fra settembre e novembre, poi si sgonfia nel 2026. Giugno è parziale a entrambi gli estremi (dal 18 al 30 nel 2025, fino al 18 nel 2026).
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent4)"></span>Chi pubblica, quanto</div>
+      <table class="data-table">
+        <thead><tr><th>Canale</th><th class="num">Post/sett.</th><th class="num">Interazioni 12m</th><th class="num">Engagement</th></tr></thead>
+        <tbody>
+          <tr><td>Principale (FB)</td><td class="num">~10</td><td class="num">6.264</td><td class="num">1,59%</td></tr>
+          <tr><td class="highlight">Centro Doc (FB)</td><td class="num">~3,3</td><td class="num highlight">363</td><td class="num highlight">2,26%</td></tr>
+          <tr><td>Centro Doc (IG)</td><td class="num">~3,1</td><td class="num">99</td><td class="num">0,63%</td></tr>
+        </tbody>
+      </table>
+      <div class="insight success">
+        <strong>Il Centro Doc non è abbandonato:</strong> pubblica circa 3 volte a settimana su entrambi i canali. I numeri bassi sono quindi un fatto di <strong>dimensione del pubblico</strong>, non di inattività. E su Facebook chi vede i contenuti reagisce di più che sulla pagina principale (2,26% contro 1,59%).
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FACEBOOK -->
+<div id="facebook" class="section">
+  <h2 class="section-title">Centro Documentazione · Facebook</h2>
+  <p class="section-desc">Pagina "Centro Documentazione Politiche Sociali". Il canale storico e più solido dei due.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent2)"></span>Visualizzazioni per mese</div>
+      <div class="chart-container" style="height:280px"><canvas id="c-fb-views"></canvas></div>
+      <div class="insight">
+        Flusso regolare per tutto l'anno, fra 700 e 2.800 visualizzazioni al mese, con il punto più alto ad <strong>aprile 2026</strong>. Nessun crollo: la pagina tiene.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent)"></span>Interazioni per mese</div>
+      <div class="chart-container" style="height:280px"><canvas id="c-fb-inter"></canvas></div>
+      <div class="insight success">
+        <strong>In crescita nel 2026:</strong> dopo mesi sotto le 20 interazioni, gennaio (50) e soprattutto aprile (117) segnano un salto. Il pubblico è piccolo ma sta diventando più reattivo.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent3)"></span>Da dove guardano · città principali</div>
+      <div class="chart-container" style="height:280px"><canvas id="c-fb-citta"></canvas></div>
+      <div class="insight success">
+        <strong>Pubblico iper-locale:</strong> Jesi, Ancona, Maiolati Spontini, Castelplanio, Castelbellino. È esattamente la Vallesina, il territorio del Gruppo. Italia 95,7%.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent4)"></span>Chi sono · età e genere</div>
+      <div class="chart-container" style="height:280px"><canvas id="c-fb-eta"></canvas></div>
+      <div class="insight">
+        Nettamente femminile (circa 63%) e concentrato nella fascia <strong>35–54 anni</strong>. Profilo coerente con caregiver, operatrici del sociale e insegnanti — il pubblico naturale del Centro.
+      </div>
+    </div>
+
+    <div class="card full">
+      <div class="card-title"><span class="dot" style="background:var(--accent2)"></span>Post migliori · ultimi 90 giorni</div>
+      <table class="data-table">
+        <thead><tr><th>Post</th><th class="num">Visualizz.</th><th class="num">Copertura</th><th class="num">Interaz.</th></tr></thead>
+        <tbody>
+          <tr><td>Post fotografico (picco isolato)</td><td class="num highlight">683</td><td class="num">600</td><td class="num">62</td></tr>
+          <tr><td>"Il tuo 5×1000 è essenziale…"</td><td class="num">291</td><td class="num">259</td><td class="num">2</td></tr>
+          <tr><td>Post fotografico</td><td class="num">286</td><td class="num">92</td><td class="num">7</td></tr>
+          <tr><td>Post fotografico</td><td class="num">257</td><td class="num">79</td><td class="num">4</td></tr>
+          <tr><td>Post fotografico</td><td class="num">242</td><td class="num">88</td><td class="num">8</td></tr>
+        </tbody>
+      </table>
+      <div class="insight neutral">
+        Mediana realistica per post: <strong>76 visualizzazioni, 23 di copertura, 4 interazioni</strong>. I picchi esistono ma sono rari. Il 5×1000 funziona anche qui come tema di richiamo.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INSTAGRAM -->
+<div id="instagram" class="section">
+  <h2 class="section-title">Centro Documentazione · Instagram</h2>
+  <p class="section-desc">Profilo <em>centrodoc_gru</em>. Canale giovane (nato in estate 2025), con una partenza promettente e poi un rallentamento.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent)"></span>Visualizzazioni per mese · lancio e calo</div>
+      <div class="chart-container" style="height:280px"><canvas id="c-ig-views"></canvas></div>
+      <div class="insight warning">
+        <strong>Parabola da lancio:</strong> picco a settembre 2025 (4.916), buon autunno, poi discesa progressiva nel 2026 fino a 275–357/mese. L'entusiasmo iniziale non si è trasformato in abitudine.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent4)"></span>Formati pubblicati · ultimi 90 giorni</div>
+      <div class="chart-container" style="height:280px"><canvas id="c-ig-formati"></canvas></div>
+      <div class="insight warning">
+        <strong>Quasi solo caroselli:</strong> 29 caroselli, 9 immagini, <strong>1 solo reel</strong>. Su Instagram oggi è il reel a generare copertura nuova: il canale sta usando il formato meno premiato dall'algoritmo.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent2)"></span>Da dove arriva la copertura · paesi</div>
+      <table class="data-table">
+        <thead><tr><th>Paese</th><th class="num">%</th></tr></thead>
+        <tbody>
+          <tr><td class="highlight">Italia</td><td class="num highlight">93,3</td></tr>
+          <tr><td>Germania, Palestina, Russia, Taiwan, India, Algeria, Giappone…</td><td class="num">0,7 ciascuno</td></tr>
+        </tbody>
+      </table>
+      <div class="insight warning">
+        <strong>Coda dispersa:</strong> accanto a un buon 93% italiano compare una scia di paesi scollegati dal territorio (Taiwan, India, Russia…). È copertura da hashtag, non pubblico utile. Da scontare quando si legge il dato grezzo, come già si fa con GA4.
+      </div>
+    </div>
+
+    <div class="card full">
+      <div class="card-title"><span class="dot" style="background:var(--accent3)"></span>Post migliori · ultimi 90 giorni</div>
+      <table class="data-table">
+        <thead><tr><th>Post</th><th class="num">Visualizz.</th><th class="num">Copertura</th><th class="num">Interaz.</th></tr></thead>
+        <tbody>
+          <tr><td>"Passeggiando tra gli scaffali" — Amore liquido</td><td class="num highlight">111</td><td class="num">65</td><td class="num">3</td></tr>
+          <tr><td>"Una mamma ci ha scritto…"</td><td class="num">101</td><td class="num">46</td><td class="num">3</td></tr>
+          <tr><td>"Una donna di quasi 80 anni…"</td><td class="num">97</td><td class="num">56</td><td class="num">3</td></tr>
+          <tr><td>"Passeggiando tra gli scaffali" — Lettera a una…</td><td class="num">86</td><td class="num">22</td><td class="num">1</td></tr>
+          <tr><td>Giornata mondiale consapevolezza autismo</td><td class="num">74</td><td class="num">19</td><td class="num">1</td></tr>
+        </tbody>
+      </table>
+      <div class="insight neutral">
+        Mediana per post: <strong>41 visualizzazioni, 10 di copertura, 0–1 interazione</strong>. Le rubriche editoriali ("Passeggiando tra gli scaffali") e le storie reali di famiglie sono ciò che rende meglio: vale la pena puntarci.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFRONTO -->
+<div id="confronto" class="section">
+  <h2 class="section-title">Confronto coi canali</h2>
+  <p class="section-desc">Stesso periodo, in larga parte stessi contenuti cross-postati. Confrontare i tre canali post-per-post (ultimi 90 giorni) isola la resa reale di ciascuno, al netto della frequenza di pubblicazione.</p>
+
+  <div class="card-grid">
+    <div class="card full">
+      <div class="card-title"><span class="dot" style="background:var(--accent2)"></span>Resa mediana per post · ultimi 90 giorni</div>
+      <div class="chart-container" style="height:300px"><canvas id="c-perpost"></canvas></div>
+      <div class="insight neutral">
+        <strong>A parità di contenuto, l'ordine è netto:</strong> la pagina principale porta un post mediano a 301 visualizzazioni, il Centro Doc FB a 76, l'IG a 41. Lo stesso post pubblicato sulla principale raggiunge circa <strong>4 volte</strong> le persone rispetto al Centro Doc FB, e su FB Centro Doc circa il doppio che su IG.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent3)"></span>Tasso di engagement · 12 mesi</div>
+      <div class="chart-container" style="height:260px"><canvas id="c-eng"></canvas></div>
+      <div class="insight success">
+        <strong>Il dato a favore del Centro Doc FB:</strong> chi lo vede interagisce di più di chi vede la pagina principale (2,26% contro 1,59%). È un pubblico piccolo ma affezionato. L'IG, invece, è ultimo anche qui.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot" style="background:var(--accent4)"></span>Nuovi follower netti · 12 mesi</div>
+      <table class="data-table">
+        <thead><tr><th>Canale</th><th class="num">Follower netti</th></tr></thead>
+        <tbody>
+          <tr><td>Principale (FB)</td><td class="num highlight">+298</td></tr>
+          <tr><td>Centro Doc (FB)</td><td class="num">+24</td></tr>
+          <tr><td>Centro Doc (IG)</td><td class="num">+29</td></tr>
+        </tbody>
+      </table>
+      <div class="insight">
+        La crescita di pubblico è quasi tutta sulla principale. I canali del Centro Doc sono <strong>sostanzialmente fermi</strong> sul reclutamento di nuovi follower. <em>(Nota: qui abbiamo la variazione netta, non il totale di partenza dei follower.)</em>
+      </div>
+    </div>
+
+    <div class="card full">
+      <div class="card-title"><span class="dot" style="background:var(--accent)"></span>Si sovrappongono?</div>
+      <div style="font-size:.88rem;line-height:1.7">
+        <p>I pubblici sono <strong>geograficamente molto simili</strong>: principale e Centro Doc FB pescano entrambi soprattutto a Jesi e Ancona. La differenza vera è nel <strong>contenuto</strong>: la principale fa attualità, diritti, vita dell'associazione; il Centro Doc fa segnalazioni librarie, rubriche di lettura, promozione della biblioteca e della rivista. Stesso territorio, voce diversa.</p>
+        <p style="margin-top:.6rem">Questo è il punto su cui si gioca la decisione: lo stesso pubblico locale è già in larga parte raggiungibile dalla pagina principale, dove i contenuti del Centro Doc otterrebbero ~4× la copertura. Tenere un canale separato ha senso solo se al Centro Doc serve una <strong>voce e un'identità proprie</strong> (verso operatori, biblioteche, abbonati Appunti), non solo più copertura.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VERDETTO -->
+<div id="verdetto" class="section">
+  <h2 class="section-title">Verdetto</h2>
+  <p class="section-desc">Il report non decide al posto del Gruppo: mette in fila i tre scenari pesati sui numeri, così la scelta è informata. La decisione resta vostra.</p>
+
+  <div class="card-grid">
+    <div class="card" style="border-left:4px solid var(--accent)">
+      <span class="tag no">Sconsigliato</span>
+      <div class="verdict-head">Chiudere tutto il Centro Doc</div>
+      <div style="font-size:.86rem;line-height:1.65">Non regge sui dati. La pagina <strong>Facebook</strong> è attiva, costa poco, raggiunge un pubblico iper-locale e ha l'<strong>engagement più alto dei tre canali</strong>. Spegnerla farebbe perdere un presidio funzionante per risparmiare un lavoro che già si fa.</div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--accent3)">
+      <span class="tag yes">Solido</span>
+      <div class="verdict-head">Tenere e curare Facebook</div>
+      <div style="font-size:.86rem;line-height:1.65">L'opzione più difendibile. Il canale FB fa il suo lavoro: parla a caregiver e operatrici della Vallesina con la voce del Centro. Va mantenuto, accettando che resti piccolo. Piccoli ritocchi — più rubriche editoriali, più rilanci del 5×1000, qualche video — bastano: il pubblico giusto c'è già.</div>
+    </div>
+
+    <div class="card" style="border-left:4px solid var(--accent4)">
+      <span class="tag maybe">Da decidere</span>
+      <div class="verdict-head">Instagram: scegliere, non lasciare a metà</div>
+      <div style="font-size:.86rem;line-height:1.65">È qui il vero nodo. L'IG è partito bene e si è spento; oggi è ultimo su copertura, interazioni ed engagement, e tira copertura dispersa. Due strade oneste: <strong>(a) impegnarsi davvero</strong> — reel regolari, contenuti nativi, storie — accettando di investirci tempo; oppure <strong>(b) ridurlo a cross-posting automatico</strong> dal FB, senza più dedicargli energie dedicate. La via di mezzo attuale è quella che rende meno.</div>
+    </div>
+
+    <div class="card full" style="border-left:4px solid var(--accent2)">
+      <div class="card-title"><span class="dot" style="background:var(--accent2)"></span>La domanda che decide tutto</div>
+      <div style="font-size:.9rem;line-height:1.75">
+        <p>Tutto si riduce a una scelta di funzione: <strong>il Centro Documentazione vuole una propria voce social, o gli basta essere raccontato dalla pagina principale?</strong></p>
+        <p style="margin-top:.7rem">Se la risposta è "voce propria" — per parlare a un pubblico specifico (operatori del sociale, biblioteche, abbonati alla rivista) con un linguaggio che sulla pagina generalista si perderebbe — allora <strong>Facebook si tiene e si cura</strong>, e su Instagram si fa la scelta netta del riquadro qui sopra.</p>
+        <p style="margin-top:.7rem">Se la risposta è "ci basta la principale", allora l'alternativa pulita non è "chiudere e basta", ma <strong>portare i contenuti migliori del Centro Doc sulla pagina principale</strong> (dove otterrebbero ~4× la copertura) e lasciare i canali del Centro come archivio a bassa manutenzione. È l'unica versione dello scenario "chiudere" che i numeri giustificano.</p>
+      </div>
+    </div>
+
+    <div class="card full">
+      <div class="card-title"><span class="dot" style="background:var(--text-muted)"></span>Nota sui dati</div>
+      <div style="font-size:.82rem;line-height:1.6;color:var(--text-muted)">
+        Periodo 18 giu 2025 – 18 giu 2026 (giugno parziale a entrambi gli estremi). Confronto post-per-post sugli ultimi 90 giorni (limite di esportazione di Meta). Dei follower è disponibile la variazione netta, non il totale di base. Le "visualizzazioni" sono conteggiate da Meta in modo non identico tra Facebook e Instagram: per il confronto fra canali si dia più peso a copertura e interazioni che alle visualizzazioni assolute. Fonte: esportazioni Meta Business Suite (Gruppo Solidarietà · Centro Documentazione).
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Gruppo Solidarietà OdV — Analisi canali social Centro Documentazione<br>
+  Moie di Maiolati Spontini (AN) · <strong>grusol.it</strong> · Report generato il 18 giugno 2026
+</div>
+
+<script>
+Chart.defaults.font.family="'DM Sans',sans-serif";
+Chart.defaults.font.size=12;
+Chart.defaults.color='#7A7A7A';
+Chart.defaults.plugins.legend.labels.usePointStyle=true;
+Chart.defaults.plugins.legend.labels.pointStyleWidth=8;
+const C={blue:'#2E6F95',red:'#C44536',green:'#5B8C5A',gold:'#D4A843',
+  blueL:'rgba(46,111,149,0.15)',redL:'rgba(196,69,54,0.15)',greenL:'rgba(91,140,90,0.15)',goldL:'rgba(212,168,67,0.15)'};
+const MESI=['Giu 25','Lug','Ago','Set','Ott','Nov','Dic','Gen 26','Feb','Mar','Apr','Mag','Giu 26'];
+const grid={color:'#F0EDE8'}, noGrid={display:false};
+
+// Scala tre canali
+new Chart(document.getElementById('c-scala'),{type:'bar',data:{labels:['Principale (FB)','Centro Doc (FB)','Centro Doc (IG)'],
+  datasets:[{data:[394792,16028,15785],backgroundColor:[C.blue,C.green,C.gold],borderRadius:6}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+    tooltip:{callbacks:{label:c=>c.parsed.x.toLocaleString('it-IT')+' visualizzazioni'}}},
+    scales:{x:{grid,ticks:{callback:v=>v.toLocaleString('it-IT')}},y:{grid:noGrid}}}});
+
+// Centro Doc mensile (FB vs IG)
+new Chart(document.getElementById('c-cd-mensile'),{type:'line',data:{labels:MESI,datasets:[
+  {label:'Facebook',data:[60,1506,743,999,1203,981,1033,1399,819,1704,2754,1903,924],borderColor:C.green,backgroundColor:C.greenL,fill:true,tension:.3,pointRadius:3},
+  {label:'Instagram',data:[0,0,412,4916,2057,2275,887,679,1578,357,1218,1131,275],borderColor:C.gold,backgroundColor:'transparent',tension:.3,pointRadius:3}]},
+  options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,grid},x:{grid:noGrid}}}});
+
+// FB views
+new Chart(document.getElementById('c-fb-views'),{type:'bar',data:{labels:MESI,datasets:[{data:[60,1506,743,999,1203,981,1033,1399,819,1704,2754,1903,924],
+  backgroundColor:C.blueL,borderColor:C.blue,borderWidth:2,borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid},x:{grid:noGrid}}}});
+
+// FB inter
+new Chart(document.getElementById('c-fb-inter'),{type:'line',data:{labels:MESI,datasets:[{data:[0,27,8,11,9,11,19,50,23,29,117,47,12],
+  borderColor:C.red,backgroundColor:C.redL,fill:true,tension:.3,pointRadius:4,pointBackgroundColor:C.red}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid},x:{grid:noGrid}}}});
+
+// FB città
+new Chart(document.getElementById('c-fb-citta'),{type:'bar',data:{labels:['Jesi','Ancona','Maiolati S.','Falconara M.','Roma','Castelplanio','Castelbellino','Senigallia'],
+  datasets:[{data:[13.6,9,2.9,2.4,2.4,1.9,1.7,1.7],backgroundColor:C.green,borderRadius:4}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+'%'}}},
+    scales:{x:{grid,ticks:{callback:v=>v+'%'}},y:{grid:noGrid}}}});
+
+// FB età/genere
+new Chart(document.getElementById('c-fb-eta'),{type:'bar',data:{labels:['18-24','25-34','35-44','45-54','55-64','65+'],datasets:[
+  {label:'Donne',data:[0.3,10.4,17.3,18.6,8.9,7.1],backgroundColor:C.red,borderRadius:3},
+  {label:'Uomini',data:[0,5.3,11.5,7.9,7.1,5.6],backgroundColor:C.blue,borderRadius:3}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y+'%'}}},
+    scales:{y:{beginAtZero:true,grid,ticks:{callback:v=>v+'%'}},x:{grid:noGrid}}}});
+
+// IG views
+new Chart(document.getElementById('c-ig-views'),{type:'bar',data:{labels:MESI,datasets:[{data:[0,0,412,4916,2057,2275,887,679,1578,357,1218,1131,275],
+  backgroundColor:C.goldL,borderColor:C.gold,borderWidth:2,borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid},x:{grid:noGrid}}}});
+
+// IG formati
+new Chart(document.getElementById('c-ig-formati'),{type:'doughnut',data:{labels:['Caroselli (29)','Immagini (9)','Reel (1)'],
+  datasets:[{data:[29,9,1],backgroundColor:[C.blue,C.green,C.red],borderWidth:0,cutout:'62%'}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}});
+
+// Resa per post
+new Chart(document.getElementById('c-perpost'),{type:'bar',data:{labels:['Visualizz. (mediana)','Copertura (mediana)','Interazioni (media)'],datasets:[
+  {label:'Principale (FB)',data:[301,160,12.7],backgroundColor:C.blue,borderRadius:4},
+  {label:'Centro Doc (FB)',data:[76,23,4.1],backgroundColor:C.green,borderRadius:4},
+  {label:'Centro Doc (IG)',data:[41,10,0.7],backgroundColor:C.gold,borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true,grid},x:{grid:noGrid}}}});
+
+// Engagement
+new Chart(document.getElementById('c-eng'),{type:'bar',data:{labels:['Principale (FB)','Centro Doc (FB)','Centro Doc (IG)'],
+  datasets:[{data:[1.59,2.26,0.63],backgroundColor:[C.blue,C.green,C.gold],borderRadius:6}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+'%'}}},
+    scales:{y:{beginAtZero:true,grid,ticks:{callback:v=>v+'%'}},x:{grid:noGrid}}}});
+
+function showSection(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('#'+id+' canvas').forEach(cv=>{const ch=Chart.getChart(cv);if(ch)ch.resize();});
+  });
+  window.scrollTo({top:document.querySelector('.nav').offsetTop-10,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
