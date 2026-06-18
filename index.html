@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gruppo Solidarietà — Report e statistiche</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FAF7F2; --card:#FFFFFF; --text:#2C2C2C; --text-muted:#7A7A7A;
+  --accent:#C44536; --accent2:#2E6F95; --accent3:#5B8C5A; --accent4:#D4A843;
+  --border:#E8E2D8; --shadow:0 2px 20px rgba(0,0,0,0.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;display:flex;flex-direction:column;}
+.hero{background:linear-gradient(135deg,#2E6F95 0%,#1a4a64 60%,#C44536 100%);color:#fff;padding:3.5rem 2rem 3rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");opacity:.5;}
+.hero h1{font-family:'DM Serif Display',serif;font-size:2.6rem;font-weight:400;letter-spacing:-.5px;position:relative;margin-bottom:.4rem;}
+.hero .subtitle{font-size:1.05rem;opacity:.88;font-weight:300;position:relative;max-width:560px;margin:0 auto;}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:.25rem 1rem;font-size:.82rem;margin-top:1rem;position:relative;backdrop-filter:blur(4px);}
+.wrap{max-width:980px;margin:0 auto;padding:2.5rem 1.5rem;width:100%;flex:1;}
+.intro{font-size:.92rem;color:var(--text-muted);max-width:640px;margin-bottom:2rem;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.3rem;}
+.report-card{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--border);border-top:4px solid var(--accent2);border-radius:12px;padding:1.6rem;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;animation:fadeIn .5s ease forwards;}
+.report-card:hover{transform:translateY(-4px);box-shadow:0 8px 28px rgba(0,0,0,.10);}
+.report-card.c1{border-top-color:var(--accent2);}
+.report-card.c2{border-top-color:var(--accent3);}
+.report-card.c3{border-top-color:var(--accent4);}
+.report-card .period{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);font-weight:600;}
+.report-card h2{font-family:'DM Serif Display',serif;font-size:1.35rem;font-weight:400;margin:.5rem 0 .6rem;line-height:1.25;}
+.report-card p{font-size:.86rem;color:var(--text-muted);line-height:1.55;}
+.report-card .open{display:inline-block;margin-top:1rem;font-size:.82rem;font-weight:600;color:var(--accent2);}
+.report-card.c2 .open{color:var(--accent3);}
+.report-card.c3 .open{color:var(--accent4);}
+.footer{text-align:center;padding:2rem 1.5rem;font-size:.75rem;color:var(--text-muted);border-top:1px solid var(--border);}
+@media(max-width:600px){.hero h1{font-size:2rem;}.grid{grid-template-columns:1fr;}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.report-card.c2{animation-delay:.08s;}
+.report-card.c3{animation-delay:.16s;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Gruppo Solidarietà</h1>
+  <div class="subtitle">Centro di Documentazione sulle Politiche Sociali · Report e statistiche</div>
+  <div class="badge">📊 Raccolta dei report</div>
+</div>
+
+<div class="wrap">
+  <p class="intro">Report e analisi sulle attività del Gruppo Solidarietà OdV: la rivista <em>Appunti sulle politiche sociali</em>, il centro di documentazione, il sito e i canali social. Scegli un report per aprirlo.</p>
+
+  <div class="grid">
+
+    <a class="report-card c1" href="statistiche-centro-doc-2025.html">
+      <div class="period">Annuale · 2025</div>
+      <h2>Statistiche del Centro di Documentazione</h2>
+      <p>Rivista "Appunti", abbonamenti e incassi, biblioteca e prestiti, collezione riviste. Andamenti, criticità e raccomandazioni operative.</p>
+      <span class="open">Apri il report →</span>
+    </a>
+
+    <a class="report-card c2" href="Statistiche_Sito_2024vs2025.html">
+      <div class="period">Confronto · 2024 vs 2025</div>
+      <h2>Statistiche del sito grusol.it</h2>
+      <p>Traffico e analytics del sito: visitatori, sorgenti, pagine più viste. Confronto fra il 2024 e il 2025.</p>
+      <span class="open">Apri il report →</span>
+    </a>
+
+    <a class="report-card c3" href="Social_CentroDocumentazione_2025-2026.html">
+      <div class="period">12 mesi · giu 2025 – giu 2026</div>
+      <h2>Social del Centro Documentazione</h2>
+      <p>Pagina Facebook e profilo Instagram a confronto con la pagina principale. Analisi per decidere se tenere, potenziare o chiudere i canali.</p>
+      <span class="open">Apri il report →</span>
+    </a>
+
+  </div>
+</div>
+
+<div class="footer">
+  Gruppo Solidarietà OdV · Moie di Maiolati Spontini (AN) · <strong>grusol.it</strong>
+</div>
+
+</body>
+</html>
